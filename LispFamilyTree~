@@ -1,17 +1,12 @@
 ;;;; -*- Mode: Lisp; -*- 
 (print "Hello World")
 (setf testCases (list '(E A B AB)))
-(setf testCases(append testCases (list '(E John Jessie Jenry))))
+(setf testCases(append testCases'(E John Jessie Jenry)))
 (progn (print testCases))
 (defun empty (input)
   input
   )
-(defun DummyFunction (person1 person2 person3 tree)
-  (print person1)
-  (print person2)
-  (print person3)
 
-  )
 (defstruct person 
 
   (parents nil)) ;; add more slots as needed.
@@ -51,7 +46,6 @@
 
 
 
-
 (defun family ()
 
   "This is the top-level function for the whole Lisp program."
@@ -59,8 +53,8 @@
   (let ((tree (make-hash-table :size 1000 :test #'equal)))
 
     (loop for x in testCases
-          do( Case (first x)
-              (E (DummyFunction (second x) (third x) (fourth x) ))
+          do( Case x
+              (E (empty x))
               (W (empty x))
               (X (empty x))
              )
