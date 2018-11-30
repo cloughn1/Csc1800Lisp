@@ -5,7 +5,7 @@
 (setf testCases(append testCases (list '(E E F EF))))
 (setf testCases(append testCases (list '(E G H GH))))
 (setf testCases(append testCases (list '(E A C))))
-(setf testCases(append testCases (list '(E John I J IJ))))
+(setf testCases(append testCases (list '(E I J IJ))))
 (setf testCases(append testCases (list '(W A Spouse B))))
 
 (defun empty (input)
@@ -18,14 +18,18 @@
 
   )
 (defun isRelation (person1 relation person2 tree)
-  (print relation)
-  (if (string= relation "SPOUSE") (isSpouse person1 person2 tree) (print "Not equal"))
+  ;(print relation)
+  (if (string= relation "SPOUSE") (isSpouse person1 person2 tree) )
   )
 (defun isSpouse (person1 person2 tree)
-  (print "isSpouse function")
+  ;(print "isSpouse function")
+  ;(print (person-spouses (gethash person2 tree)))
+ ; (print (person-name (gethash person2 tree)))
+  ;(print person2)
+  ;(print (person-spouses (gethash person1 tree)))
   (setf val "No")
-  (if (member (gethash person1 tree) (person-spouses (gethash person2 tree)) :test #'equal) (setf val "Yes"))
-  (if (member (person-name (gethash person2 tree)) (person-spouses (gethash person1 tree)) :test #'equal) (setf val "Yes"))
+  (if (member person1  (person-spouses (gethash person2 tree)) :test #'equal) (setf val "Yes"))
+  (if (member person2  (person-spouses (gethash person1 tree)) :test #'equal) (setf val "Yes"))
   (print val)
   )
 (defun printAll (person1 relation)
@@ -60,7 +64,7 @@
   )
 
 (defun person-name (input)
-  
+  ;bad touchie
   )
 (defun storeperson (symbol-name struct family-tree)
 
