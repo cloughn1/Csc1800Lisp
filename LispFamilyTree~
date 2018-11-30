@@ -1,21 +1,63 @@
 ;;;; -*- Mode: Lisp; -*- 
 (print "Hello World")
 (setf testCases (list '(E A B AB)))
-(setf testCases(append testCases (list '(E John Jessie Jenry))))
+(setf testCases(append testCases (list '(E C D CD))))
+(setf testCases(append testCases (list '(E E F EF))))
+(setf testCases(append testCases (list '(E G H GH))))
+(setf testCases(append testCases (list '(E A C))))
+(setf testCases(append testCases (list '(E John I J IJ))))
+(setf testCases(append testCases (list '(W A Spouse B))))
 
 (defun empty (input)
   (print input)
   )
 (defun DummyFunction (person1 person2 person3 tree)
-  (print 'lispisgodawful)
   (print person1)
   (print person2)
   (print person3)
 
   )
-(defstruct person 
+(defun isRelation (person1 relation person2 tree)
+  (print relation)
+  (if (string= relation "SPOUSE") (isSpouse person1 person2 tree) (print "Not equal"))
+  )
+(defun isSpouse (person1 person2 tree)
+  (print "isSpouse function")
+  (setf val "No")
+  (if (member (gethash person1 tree) (person-spouses (gethash person2 tree)) :test #'equal) (setf val "Yes"))
+  (if (member (person-name (gethash person2 tree)) (person-spouses (gethash person1 tree)) :test #'equal) (setf val "Yes"))
+  (print val)
+  )
+(defun printAll (person1 relation)
 
-  (parents nil)) ;; add more slots as needed.
+  )
+(defun childMarriage (person1 person2 person3 tree)
+  (Marriage person1 person2 tree)
+  (parent person1 person2 person3 tree)
+  )
+(defun Marriage (person1 person2 tree)
+  (if (not (gethash person1 tree))
+      (storeperson person1 (make-person :name person1) tree )
+    )
+  (if (not (gethash person2 tree))
+      (storeperson person2 (make-person :name person2) tree )
+    )
+  (spouse person1 person2 tree)
+  (spouse person2 person1 tree)
+  )
+(defstruct person 
+  (name nil)
+  (parents (list))
+  (spouses (list)) 
+  )
+(defun spouse (person1 spouse tree)
+  (setf (person-spouses (gethash person1 tree)) (cons spouse (person-spouses (gethash person1 tree))))
+  (setf (person-spouses (gethash person1 tree)) (sort (person-spouses (gethash person1 tree)) #'string<))
+  )
+(defun parent (person1 parent1 parent2 tree)
+  (setf (person-parents (gethash person1 tree)) (cons parent1 (person-parents (gethash person1 tree))))
+  (setf (person-parents (gethash person1 tree)) (cons parent2 (person-parents (gethash person1 tree))))
+  )
 
 (defun person-name (input)
   
@@ -23,8 +65,8 @@
 (defun storeperson (symbol-name struct family-tree)
 
   "Students need to write this! This should enter the person structure in STRUCT into the hashtable in FAMILY-TREE with the key in SYMBOL-NAME."
-
-  family-tree)
+  
+  (setf (gethash symbol-name family-tree) struct))
 
 
 
@@ -65,8 +107,10 @@
              do ( 
              
              case (first x)
-             (E (dummyfunction (first x) (second x) (third x) tree )
-             (W (print x))
+             (E (print x) (if (fourth x) (childMarriage (second x)(third x) (fourth x) tree) (Marriage (second x) (third x) tree)) 
+                ;(if (not (fourth x)) (Marriage (second x) (third x) (tree)))
+                )
+             (W (print x) (isRelation (second x) (third x) (fourth x) tree))
              (X (print x))
              
              )
